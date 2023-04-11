@@ -1,0 +1,8 @@
+{
+  "/echo":{
+    "target":"https://localhost:44314",
+    "secure":true,
+    "changeOrigin":true,
+    "logLevel":"debug"
+  }
+}

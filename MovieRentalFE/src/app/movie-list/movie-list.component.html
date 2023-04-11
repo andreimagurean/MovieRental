@@ -1,0 +1,61 @@
+<div class="card">
+  <div class="card-body">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend"></div>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search by name"
+        aria-label="Search"
+        aria-describedby="basic-addon1"
+        [(ngModel)]="listFilter"
+      />
+    </div>
+    <div>
+      <h1>{{ pageTitle }}</h1>
+    </div>
+    <div>
+      <button class="btn btn-primary" [routerLink]="[emptyGuid]">
+        Add movie
+      </button>
+    </div>
+    <div class="table-responsive">
+      <table class="table mat-elevation-z8" *ngIf="movies.length">
+        <thead>
+          <tr>
+            <th class=".col-4">No.</th>
+            <th class=".col-4">Name</th>
+            <th class=".col-4">Genre</th>
+            <th class=".col-4">Year</th>
+            <th class=".col-4">Rating</th>
+            <th class=".col-4">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let movie of filteredMovies">
+            <td class=".col-4">{{ movie.id }}</td>
+            <td class=".col-4">{{ movie.name }}</td>
+            <td class=".col-4">{{ movie.genre }}</td>
+            <td class=".col-4">{{ movie.year }}</td>
+            <td>
+              <app-movie-rating
+                [rating]="movie.rating"
+                (ratingClicked)="onRatingClicked($event)"
+              ></app-movie-rating>
+            </td>
+            <td class=".col-4 actions">
+              <button
+                class="btn btn-outline-primary bi bi-pencil-fill"
+                [routerLink]="[movie.id]"
+              ></button>
+              <button
+                class="btn btn-outline-primary bi bi-trash-fill"
+                (click)="deleteMovie(movie.id)"
+              ></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

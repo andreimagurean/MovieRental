@@ -1,0 +1,44 @@
+<form [formGroup]="movieForm" (ngSubmit)="onSubmit()" class="details w-100">
+  <div class="form-group">
+    <label for="name">Movie name:</label>
+    <input
+      formControlName="name"
+      type="input"
+      class="form-control"
+      id="name"
+      [defaultValue]="this.movie?.name"
+    />
+  </div>
+  <div class="form-group">
+    <label for="genre">Genre:</label>
+    <input
+      formControlName="genre"
+      type="input"
+      class="form-control"
+      id="genre"
+      [defaultValue]="this.movie?.genre"
+    />
+  </div>
+  <div class="form-group">
+    <label for="year">Year:</label>
+    <input
+      formControlName="year"
+      type="number"
+      class="form-control"
+      id="year"
+      [defaultValue]="this.movie?.year"
+    />
+  </div>
+  <div class="form-group">
+    <label for="rating">Rating:</label>
+    <input
+      formControlName="rating"
+      type="number"
+      class="form-control"
+      id="rating"
+      [defaultValue]="this.movie?.rating"
+    />
+  </div>
+  <button (click)="onBack()" class="btn btn-secondary">Back</button>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
