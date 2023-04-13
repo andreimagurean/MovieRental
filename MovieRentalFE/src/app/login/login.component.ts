@@ -41,11 +41,21 @@ export class LoginComponent {
     };
 
     if (this.loginForm.valid) {
-      this.userService.loginUser(newUser).subscribe((x) => {
-        this.authService.login(x.username, x.password).subscribe((data) => {
-          if (data) this.router.navigate(['/movies']);
+      if (newUser.email) {
+        this.userService.loginUser(newUser).subscribe((x) => {
+          this.authService.login(x.username, x.password).subscribe((data) => {
+            if (data) this.router.navigate(['/movies']);
+          });
         });
-      });
+      }
+      else {
+        this.userService.getUser(newUser.username, newUser.password).subscribe((x) => {
+          this.authService.login(x.username, x.password).subscribe((data) => {
+            if (data) this.router.navigate(['/movies']);
+          });
+        });
+      }
+
       this.loginForm.reset();
     }
   }

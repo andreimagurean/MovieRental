@@ -12,6 +12,7 @@ export class AuthGuardService {
     if (userName && password) {
       this.isUserLoggedIn = true;
       localStorage.setItem('userName', userName);
+      localStorage.setItem('password', password);
     }
     localStorage.setItem('isUserLoggedIn', this.isUserLoggedIn ? 'true' : 'false');
 

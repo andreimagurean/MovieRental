@@ -16,9 +16,9 @@ export class UserService {
       .pipe(catchError(this.handleError));
   }
 
-  getUserByUsername(username: string): Observable<IUser> {
+  getUser(username: string, password: string): Observable<IUser> {
     return this.http
-      .get<IUser>(`https://localhost:44314/User/${username}`)
+      .get<IUser>(`https://localhost:44314/User/username`, { params: { username, password } })
       .pipe(catchError(this.handleError));
   }
 

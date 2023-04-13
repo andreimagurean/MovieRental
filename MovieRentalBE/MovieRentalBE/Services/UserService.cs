@@ -12,30 +12,25 @@ public class UserService : IUserService
         users = dbClient.GetUsersCollection();
     }
 
-    public List<User> GetUsers()
+    public async Task<List<User>> GetUsers()
     {
-        return users.Find(m => true).ToList();
+        return await users.Find(m => true).ToListAsync();
     }
 
-    public User CreateUser(User user)
+    public async Task<User> CreateUser(User user)
     {
-        users.InsertOne(user);
+        await users.InsertOneAsync(user);
         return user;
     }
 
-    public User GetUserByUsername(string username)
+    public async Task<User> UpdateUser(User user)
     {
-        return users.Find(user => user.Username == username).FirstOrDefault();
-    }
-
-    public User UpdateUser(User user)
-    {
-        users.ReplaceOne(b => b.Id == user.Id, user);
+        await users.ReplaceOneAsync(u => u.Id == user.Id, user);
         return user;
     }
 
-    public User ChecktUserCredentials(User user)
+    public async Task<User> GetUser(string? username, string? password)
     {
-        return users.Find(u => u.Username == user.Username && u.Password == user.Password).FirstOrDefault();
+        return await users.Find(u => u.Username == username && u.Password == password).FirstOrDefaultAsync();
     }
 }

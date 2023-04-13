@@ -4,9 +4,8 @@ namespace MovieRentalBE.Services;
 
 public interface IUserService
 {
-    List<User> GetUsers();
-    User ChecktUserCredentials(User user);
-    User UpdateUser(User user);
-    User CreateUser(User user);
-    User GetUserByUsername(string username);
+    Task<List<User>> GetUsers();
+    Task<User> GetUser(string username, string password);
+    Task<User> UpdateUser(User user);
+    Task<User> CreateUser(User user);
 }

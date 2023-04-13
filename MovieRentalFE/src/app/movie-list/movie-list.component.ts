@@ -16,7 +16,6 @@ export class MovieListComponent implements OnInit {
   pageTitle = 'Movie List';
   sub!: Subscription;
   displayedColumns: string[] = ['id', 'name', 'genre', 'year', 'rating'];
-  username?: string | null;
   activeUser?: IUser;
 
   private _listFilter = '';
@@ -32,9 +31,10 @@ export class MovieListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMovies();
-    this.username = localStorage.getItem("userName");
-    if (this.username) {
-      this.userService.getUserByUsername(this.username).subscribe(user => {
+    const username = localStorage.getItem("userName");
+    const password = localStorage.getItem("password");
+    if (username && password) {
+      this.userService.getUser(username, password).subscribe(user => {
         this.activeUser = user;
       });
     }
@@ -79,7 +79,8 @@ export class MovieListComponent implements OnInit {
       }
       else {
         updatedMovie.stock -= 1;
-        this.activeUser?.movieId?.push(movieId);
+        if (this.activeUser?.movieId == null) this.activeUser!.movieId = [movieId];
+        else this.activeUser?.movieId?.push(movieId);
         this.userService.updateUser(this.activeUser!).subscribe();
         this.movieService.updateMovie(updatedMovie).subscribe();
       }

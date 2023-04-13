@@ -16,44 +16,39 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetUsers()
+    public async Task<IActionResult> GetUsers()
     {
-        return Ok(userService.GetUsers());
+        return Ok(await userService.GetUsers());
     }
 
-    [HttpGet("{username}")]
-    public IActionResult GetUserByUsername(string username)
+    [HttpGet("username")]
+    public async Task<IActionResult> GetUser(string username, string password)
     {
-        return Ok(userService.GetUserByUsername(username));
+        User result = await userService.GetUser(username, password);
+        if (result == null)
+        {
+            return BadRequest("Username or password is incorrect");
+        }
+        return Ok(result);
     }
 
     [HttpPost]
-    public IActionResult CreateUser(User user)
+    public async Task<IActionResult> CreateUser(User user)
     {
-        if (user.Email is not null && user.Username is not null)
+        if (user.Username is not null
+            && user.Password is not null
+            && await userService.GetUser(user.Username, user.Password) is not null)
         {
-            if (userService.GetUserByUsername(user.Username) is not null)
-            {
-                return BadRequest("Username already exists");
-            }
+            return BadRequest("Username already exists");
+        }
 
-            user.Id = Guid.NewGuid();
-            return Ok(userService.CreateUser(user));
-        }
-        else
-        {
-            User checkValidUser = userService.ChecktUserCredentials(user);
-            if (checkValidUser == null)
-            {
-                return BadRequest("Username or password is invalid");
-            }
-            return Ok(checkValidUser);
-        }
+        user.Id = Guid.NewGuid();
+        return Ok(await userService.CreateUser(user));
     }
 
     [HttpPut]
-    public IActionResult UpdateUser(User user)
+    public async Task<IActionResult> UpdateUser(User user)
     {
-        return Ok(userService.UpdateUser(user));
+        return Ok(await userService.UpdateUser(user));
     }
 }
