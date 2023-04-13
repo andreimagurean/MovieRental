@@ -19,6 +19,7 @@ export class MovieDetailsComponent implements OnInit {
     genre: new FormControl(),
     year: new FormControl(),
     rating: new FormControl(),
+    stock: new FormControl(),
   });
 
   constructor(
@@ -43,6 +44,7 @@ export class MovieDetailsComponent implements OnInit {
           genre: new FormControl(this.movie?.genre),
           year: new FormControl(this.movie?.year),
           rating: new FormControl(this.movie?.rating),
+          stock: new FormControl(this.movie?.stock),
         });
       },
       error: (err) => (this.errorMessage = err),
@@ -56,6 +58,7 @@ export class MovieDetailsComponent implements OnInit {
       genre: this.movieForm.value.genre,
       year: this.movieForm.value.year,
       rating: this.movieForm.value.rating,
+      stock: this.movieForm.value.stock,
     };
     if (this.id === '00000000-0000-0000-0000-000000000000') {
       this.movieService.addMovie(movie).subscribe();

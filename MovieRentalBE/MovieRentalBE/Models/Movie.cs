@@ -11,4 +11,5 @@ public record Movie
     public string? Genre { get; set; }
     public int? Year { get; set; }
     public decimal? Rating { get; set; }
+    public int? Stock { get; set; }
 }

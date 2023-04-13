@@ -27,6 +27,7 @@
             <th class=".col-4">Name</th>
             <th class=".col-4">Genre</th>
             <th class=".col-4">Year</th>
+            <th class=".col-4">Stock</th>
             <th class=".col-4">Rating</th>
             <th class=".col-4">Actions</th>
           </tr>
@@ -37,6 +38,7 @@
             <td class=".col-4">{{ movie.name }}</td>
             <td class=".col-4">{{ movie.genre }}</td>
             <td class=".col-4">{{ movie.year }}</td>
+            <td class=".col-4">{{ movie.stock }}</td>
             <td>
               <app-movie-rating
                 [rating]="movie.rating"
@@ -51,6 +53,14 @@
               <button
                 class="btn btn-outline-primary bi bi-trash-fill"
                 (click)="deleteMovie(movie.id)"
+                *ngIf ="activeUser != undefined"
+              ></button>
+              <button class="btn btn-outline-primary bi bi-bag-fill"
+              *ngIf ="activeUser"
+              [ngClass]="{'btn-outline-danger': this.activeUser.movieId?.includes(movie.id)}"
+              id="{{'rentButton-'+ movie.id}}"
+              (click)="rentMovie(movie.id)"
+              [disabled]="movie.stock == 0"
               ></button>
             </td>
           </tr>

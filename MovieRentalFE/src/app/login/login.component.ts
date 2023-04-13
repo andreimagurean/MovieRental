@@ -23,7 +23,7 @@ export class LoginComponent {
     private userService: UserService,
     private authService: AuthGuardService,
     private router: Router
-  ) {}
+  ) { }
 
   onSignUp() {
     this.isLogin = !this.isLogin;

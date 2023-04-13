@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MovieService } from '../services/movie.service';
-import { IMovie } from '../shared/models';
+import { IMovie, IUser } from '../shared/models';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-movie-list',
@@ -15,6 +16,8 @@ export class MovieListComponent implements OnInit {
   pageTitle = 'Movie List';
   sub!: Subscription;
   displayedColumns: string[] = ['id', 'name', 'genre', 'year', 'rating'];
+  username?: string | null;
+  activeUser?: IUser;
 
   private _listFilter = '';
   get listFilter(): string {
@@ -25,10 +28,16 @@ export class MovieListComponent implements OnInit {
     this.filteredMovies = this.performFilter(value);
   }
 
-  constructor(private movieService: MovieService) {}
+  constructor(private movieService: MovieService, private userService: UserService) { }
 
   ngOnInit(): void {
     this.loadMovies();
+    this.username = localStorage.getItem("userName");
+    if (this.username) {
+      this.userService.getUserByUsername(this.username).subscribe(user => {
+        this.activeUser = user;
+      });
+    }
   }
 
   ngOnDestroy(): void {
@@ -56,6 +65,25 @@ export class MovieListComponent implements OnInit {
       if (this.sub) this.sub.unsubscribe();
       this.loadMovies();
     });
+  }
+
+  rentMovie(movieId: string) {
+    const updatedMovie = this.movies.find(x => x.id === movieId);
+    if (updatedMovie?.stock) {
+      if (this.activeUser?.movieId?.includes(updatedMovie.id)) {
+        updatedMovie.stock += 1;
+        const movieIds = this.activeUser?.movieId?.filter(x => x !== updatedMovie.id);
+        this.activeUser.movieId = movieIds;
+        this.userService.updateUser(this.activeUser!).subscribe();
+        this.movieService.updateMovie(updatedMovie).subscribe();
+      }
+      else {
+        updatedMovie.stock -= 1;
+        this.activeUser?.movieId?.push(movieId);
+        this.userService.updateUser(this.activeUser!).subscribe();
+        this.movieService.updateMovie(updatedMovie).subscribe();
+      }
+    }
   }
 
   onRatingClicked(message: string): void {

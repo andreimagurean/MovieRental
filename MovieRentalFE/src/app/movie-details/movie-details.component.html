@@ -39,6 +39,16 @@
       [defaultValue]="this.movie?.rating"
     />
   </div>
+  <div class="form-group">
+    <label for="rating">Stock:</label>
+    <input
+      formControlName="stock"
+      type="number"
+      class="form-control"
+      id="stock"
+      [defaultValue]="this.movie?.stock"
+    />
+  </div>
   <button (click)="onBack()" class="btn btn-secondary">Back</button>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>

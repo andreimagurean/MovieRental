@@ -21,6 +21,12 @@ public class UserController : ControllerBase
         return Ok(userService.GetUsers());
     }
 
+    [HttpGet("{username}")]
+    public IActionResult GetUserByUsername(string username)
+    {
+        return Ok(userService.GetUserByUsername(username));
+    }
+
     [HttpPost]
     public IActionResult CreateUser(User user)
     {

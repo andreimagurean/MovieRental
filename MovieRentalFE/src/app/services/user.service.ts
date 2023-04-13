@@ -8,15 +8,21 @@ import { IUser } from '../shared/models';
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getMovies(): Observable<IUser[]> {
+  getUsers(): Observable<IUser[]> {
     return this.http
       .get<IUser[]>('https://localhost:44314/User')
       .pipe(catchError(this.handleError));
   }
 
-  updateMovie(user: IUser): Observable<IUser> {
+  getUserByUsername(username: string): Observable<IUser> {
+    return this.http
+      .get<IUser>(`https://localhost:44314/User/${username}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  updateUser(user: IUser): Observable<IUser> {
     return this.http
       .put<IUser>('https://localhost:44314/User', user)
       .pipe(catchError(this.handleError));
