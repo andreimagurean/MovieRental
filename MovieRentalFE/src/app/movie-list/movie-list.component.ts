@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MovieService } from '../services/movie.service';
-import { IMovie, IUser } from '../shared/models';
 import { UserService } from '../services/user.service';
+import { IMovie, IUser } from '../shared/models';
 
 @Component({
   selector: 'app-movie-list',

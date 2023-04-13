@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
   title = 'MovieRental';
   isUserLoggedIn = false;
 
-  constructor(private authService: AuthGuardService, private router: Router) {}
+  constructor(private authService: AuthGuardService, private router: Router) { }
 
   ngOnInit() {
     let storeData = localStorage.getItem('isUserLoggedIn');
@@ -22,6 +22,6 @@ export class AppComponent implements OnInit {
   onLogOut() {
     this.authService.logout();
     alert('You have been logged out');
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 }

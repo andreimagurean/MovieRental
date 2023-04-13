@@ -13,6 +13,7 @@ const routes: Routes = [
   },
   { path: 'movies', component: MovieListComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'movie', redirectTo: 'movies', pathMatch: 'full' },
   { path: '', redirectTo: 'movies', pathMatch: 'full' },
 ];
 
@@ -20,4 +21,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
