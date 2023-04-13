@@ -47,6 +47,7 @@ Thumbs.db
 *.pdb
 /build/
 *.suo
+*.vsidx
 *.user
 _ReSharper.*/
 *.sdf
