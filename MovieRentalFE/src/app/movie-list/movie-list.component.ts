@@ -32,9 +32,8 @@ export class MovieListComponent implements OnInit {
   ngOnInit(): void {
     this.loadMovies();
     const username = localStorage.getItem("userName");
-    const password = localStorage.getItem("password");
-    if (username && password) {
-      this.userService.getUser(username, password).subscribe(user => {
+    if (username) {
+      this.userService.getUser(username).subscribe(user => {
         this.activeUser = user;
       });
     }

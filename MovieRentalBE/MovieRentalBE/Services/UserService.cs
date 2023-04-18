@@ -29,8 +29,13 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<User> GetUser(string? username, string? password)
+    public async Task<User> CheckUser(string? username, string? password)
     {
         return await users.Find(u => u.Username == username && u.Password == password).FirstOrDefaultAsync();
+    }
+
+    public async Task<User> GetUser(string? username)
+    {
+        return await users.Find(u => u.Username == username).FirstOrDefaultAsync();
     }
 }

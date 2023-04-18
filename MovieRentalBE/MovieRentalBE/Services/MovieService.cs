@@ -12,31 +12,31 @@ public class MovieService : IMovieService
         movies = dbClient.GetMoviesCollection();
     }
 
-    public List<Movie> GetMovies()
+    public async Task<List<Movie>> GetMovies()
     {
-        return movies.Find(m => true).ToList();
+        return await movies.Find(m => true).ToListAsync();
     }
 
-    public Movie CreateMovie(Movie movie)
+    public async Task<Movie> CreateMovie(Movie movie)
     {
         movie.Id = Guid.NewGuid();
-        movies.InsertOne(movie);
+        await movies.InsertOneAsync(movie);
         return movie;
     }
 
-    public Movie UpdateMovie(Movie movie)
+    public async Task<Movie> UpdateMovie(Movie movie)
     {
-        movies.ReplaceOne(b => b.Id == movie.Id, movie);
+        await movies.ReplaceOneAsync(b => b.Id == movie.Id, movie);
         return movie;
     }
 
-    public Movie GetMovieById(Guid id)
+    public async Task<Movie> GetMovieById(Guid id)
     {
-        return movies.Find(movie => movie.Id == id).FirstOrDefault();
+        return await movies.Find(movie => movie.Id == id).FirstOrDefaultAsync();
     }
 
-    public void DeleteMovie(Guid id)
+    public async Task DeleteMovie(Guid id)
     {
-        movies.DeleteOne(movie => movie.Id == id);
+        await movies.DeleteOneAsync(movie => movie.Id == id);
     }
 }

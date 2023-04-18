@@ -22,28 +22,47 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("username")]
-    public async Task<IActionResult> GetUser(string username, string password)
+    public async Task<IActionResult> GetUser(string username) // TODO: Credentials should not be in the URL
     {
-        User result = await userService.GetUser(username, password);
+        User result = await userService.GetUser(username);
         if (result == null)
         {
             return BadRequest("Username or password is incorrect");
         }
+
         return Ok(result);
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateUser(User user)
     {
-        if (user.Username is not null
-            && user.Password is not null
-            && await userService.GetUser(user.Username, user.Password) is not null)
+        if (user.Username is null
+            || user.Password is null)
         {
-            return BadRequest("Username already exists");
+            return BadRequest("Username and password must be provided");
         }
 
-        user.Id = Guid.NewGuid();
-        return Ok(await userService.CreateUser(user));
+        User existingUser = await userService.CheckUser(user.Username, user.Password);
+
+        if (user.Email is null)
+        {
+            if (existingUser is null)
+            {
+                return BadRequest("Username or password is incorrect");
+            }
+
+            return Ok(existingUser);
+        }
+        else
+        {
+            if (existingUser is not null)
+            {
+                return BadRequest("User already exists");
+            }
+
+            user.Id = Guid.NewGuid();
+            return Ok(await userService.CreateUser(user));
+        }
     }
 
     [HttpPut]

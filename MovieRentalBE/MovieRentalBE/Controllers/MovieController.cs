@@ -16,33 +16,43 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetMovies()
+    public async Task<IActionResult> GetMovies()
     {
-        return Ok(movieService.GetMovies());
+        return Ok(await movieService.GetMovies());
     }
 
     [HttpGet("{id}", Name = "GetMovie")]
-    public IActionResult GetMovie(Guid id)
+    public async Task<IActionResult> GetMovie(Guid id)
     {
-        return Ok(movieService.GetMovieById(id));
+        return Ok(await movieService.GetMovieById(id));
     }
 
     [HttpPost]
-    public IActionResult CreateMovie(Movie movie)
+    public async Task<IActionResult> CreateMovie(Movie movie)
     {
-        return Ok(movieService.CreateMovie(movie));
+        if (movie.Stock < 0)
+        {
+            return BadRequest("Stock cannot be negative");
+        }
+
+        return Ok(await movieService.CreateMovie(movie));
     }
 
     [HttpPut]
-    public IActionResult UpdateMovie(Movie movie)
+    public async Task<IActionResult> UpdateMovie(Movie movie)
     {
-        return Ok(movieService.UpdateMovie(movie));
+        if (movie.Stock < 0)
+        {
+            return BadRequest("Stock cannot be negative");
+        }
+
+        return Ok(await movieService.UpdateMovie(movie));
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteMovie(Guid id)
+    public async Task<IActionResult> DeleteMovie(Guid id)
     {
-        movieService.DeleteMovie(id);
+        await movieService.DeleteMovie(id);
         return NoContent();
     }
 }

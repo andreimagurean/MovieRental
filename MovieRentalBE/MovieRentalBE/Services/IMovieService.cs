@@ -4,9 +4,9 @@ namespace MovieRentalBE.Services;
 
 public interface IMovieService
 {
-    List<Movie> GetMovies();
-    Movie GetMovieById(Guid id);
-    Movie CreateMovie(Movie movie);
-    Movie UpdateMovie(Movie movie);
-    void DeleteMovie(Guid id);
+    Task<List<Movie>> GetMovies();
+    Task<Movie> GetMovieById(Guid id);
+    Task<Movie> CreateMovie(Movie movie);
+    Task<Movie> UpdateMovie(Movie movie);
+    Task DeleteMovie(Guid id);
 }
