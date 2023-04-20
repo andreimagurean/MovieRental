@@ -12,4 +12,5 @@ public record Movie
     public int? Year { get; set; }
     public decimal? Rating { get; set; }
     public int? Stock { get; set; }
+    public List<Review>? Reviews { get; set; }
 }

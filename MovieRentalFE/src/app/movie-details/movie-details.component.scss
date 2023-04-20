@@ -3,4 +3,44 @@
   padding: 15px;
   margin: auto;
   margin-top: 100px;
+
+  :disabled {
+    background-color: transparent;
+    border: 0;
+  }
+}
+
+.review {
+  margin: auto;
+  max-width: 30%;
+  border-color: #0d6efd;
+  border: 1px solid;
+  margin-top: 10px;
+  border-radius: 20px;
+  background-color: #f8f9fa;
+
+  .review-username {
+    font-weight: 500;
+    font-size: large;
+    margin-left: 20px;
+  }
+
+  .review-description {
+    font-size: large;
+    margin-left: 30px;
+  }
+
+  .review-datetime {
+    margin-left: 20px;
+  }
+}
+
+.review-title {
+  text-align: center;
+}
+
+.post-review {
+  margin: auto;
+  margin-top: 50px;
+  max-width: 30%;
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IMovie } from '../shared/models';
+import { IMovie, IReview } from '../shared/models';
 import { MovieService } from '../services/movie.service';
 
 @Component({
@@ -21,12 +21,16 @@ export class MovieDetailsComponent implements OnInit {
     rating: new FormControl(),
     stock: new FormControl(),
   });
+  reviewForm = new FormGroup({
+    review: new FormControl()
+  });
+
 
   constructor(
     private movieService: MovieService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
@@ -71,5 +75,16 @@ export class MovieDetailsComponent implements OnInit {
 
   onBack(): void {
     this.router.navigate(['/movies']);
+  }
+
+  onSubmitReview(): void {
+    const review = <IReview>{
+      username: localStorage.getItem("userName"),
+      description: this.reviewForm.value.review,
+      datetime: new Date(),
+    }
+    if (this.movie?.reviews == null) this.movie!.reviews = [review];
+    else this.movie?.reviews?.push(review);
+    this.movieService.updateMovie(this.movie!).subscribe();
   }
 }

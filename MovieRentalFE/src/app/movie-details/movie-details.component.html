@@ -1,54 +1,42 @@
-<form [formGroup]="movieForm" (ngSubmit)="onSubmit()" class="details w-100">
-  <div class="form-group">
-    <label for="name">Movie name:</label>
-    <input
-      formControlName="name"
-      type="input"
-      class="form-control"
-      id="name"
-      [defaultValue]="this.movie?.name"
-    />
+<div>
+  <form [formGroup]="movieForm" (ngSubmit)="onSubmit()" class="details w-100">
+    <div class="form-group">
+      <label for="name">Movie name:</label>
+      <input formControlName="name" type="input" class="form-control" id="name" [defaultValue]="this.movie?.name" />
+    </div>
+    <div class="form-group">
+      <label for="genre">Genre:</label>
+      <input formControlName="genre" type="input" class="form-control" id="genre" [defaultValue]="this.movie?.genre" />
+    </div>
+    <div class="form-group">
+      <label for="year">Year:</label>
+      <input formControlName="year" type="number" class="form-control" id="year" [defaultValue]="this.movie?.year" />
+    </div>
+    <div class="form-group">
+      <label for="rating">Rating:</label>
+      <input formControlName="rating" type="number" class="form-control" id="rating"
+        [defaultValue]="this.movie?.rating" />
+    </div>
+    <div class="form-group">
+      <label for="rating">Stock:</label>
+      <input formControlName="stock" type="number" class="form-control" id="stock" [defaultValue]="this.movie?.stock" />
+    </div>
+    <button (click)="onBack()" class="btn btn-secondary">Back</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+<div *ngIf="this.id !== '00000000-0000-0000-0000-000000000000'">
+  <h2 class="review-title">Reviews</h2>
+  <div class="review" *ngFor="let review of this.movie?.reviews">
+    <p class="review-username">{{review.username}}</p>
+    <p class="review-datetime">{{review.datetime | date:'yyyy-MM-dd'}}</p>
+    <p class="review-description">{{review.description}}</p>
   </div>
-  <div class="form-group">
-    <label for="genre">Genre:</label>
-    <input
-      formControlName="genre"
-      type="input"
-      class="form-control"
-      id="genre"
-      [defaultValue]="this.movie?.genre"
-    />
-  </div>
-  <div class="form-group">
-    <label for="year">Year:</label>
-    <input
-      formControlName="year"
-      type="number"
-      class="form-control"
-      id="year"
-      [defaultValue]="this.movie?.year"
-    />
-  </div>
-  <div class="form-group">
-    <label for="rating">Rating:</label>
-    <input
-      formControlName="rating"
-      type="number"
-      class="form-control"
-      id="rating"
-      [defaultValue]="this.movie?.rating"
-    />
-  </div>
-  <div class="form-group">
-    <label for="rating">Stock:</label>
-    <input
-      formControlName="stock"
-      type="number"
-      class="form-control"
-      id="stock"
-      [defaultValue]="this.movie?.stock"
-    />
-  </div>
-  <button (click)="onBack()" class="btn btn-secondary">Back</button>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+  <form [formGroup]="reviewForm" (ngSubmit)="onSubmitReview()" class="post-review w-100">
+    <div class="form-group">
+      <label for="name">Review:</label>
+      <input formControlName="review" type="input" class="form-control" id="review" placeholder="Post your review" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
