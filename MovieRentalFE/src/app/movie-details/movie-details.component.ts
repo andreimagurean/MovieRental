@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IMovie, IReview } from '../shared/models';
+import { IMovie, IReview, ReviewSort } from '../shared/models';
 import { MovieService } from '../services/movie.service';
 
 @Component({
@@ -14,41 +14,45 @@ export class MovieDetailsComponent implements OnInit {
   errorMessage = '';
   movie: IMovie | undefined;
   id: string = '';
+  newMovoie: boolean = false;
+  reviewSort: ReviewSort = 0;
   movieForm = new FormGroup({
     name: new FormControl(),
     genre: new FormControl(),
     year: new FormControl(),
-    rating: new FormControl(),
-    stock: new FormControl(),
+    stock: new FormControl()
   });
   reviewForm = new FormGroup({
-    review: new FormControl()
+    review: new FormControl(),
+    rating: new FormControl()
   });
+  maxYear = new Date().getFullYear();
 
 
   constructor(
     private movieService: MovieService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id')!;
-    if (this.id !== '00000000-0000-0000-0000-000000000000') {
+    this.id === "newMovie" ? this.newMovoie = true : this.newMovoie = false;
+    if (!this.newMovoie) {
       this.getMovie(this.id);
     }
   }
 
   getMovie(id: string): void {
-    this.movieService.getMovieById(id).subscribe({
+    this.movieService.getMovieById(id, this.reviewSort).subscribe({
       next: (movie) => {
         this.movie = movie;
-        this.movieForm = new FormGroup({
+        this.movieForm = this.fb.group({
           name: new FormControl(this.movie?.name),
           genre: new FormControl(this.movie?.genre),
-          year: new FormControl(this.movie?.year),
-          rating: new FormControl(this.movie?.rating),
-          stock: new FormControl(this.movie?.stock),
+          year: new FormControl(this.movie?.year, [Validators.min(1888), Validators.max(2050)]),
+          stock: new FormControl(this.movie?.stock, [Validators.min(0)]),
         });
       },
       error: (err) => (this.errorMessage = err),
@@ -61,16 +65,19 @@ export class MovieDetailsComponent implements OnInit {
       name: this.movieForm.value.name,
       genre: this.movieForm.value.genre,
       year: this.movieForm.value.year,
-      rating: this.movieForm.value.rating,
       stock: this.movieForm.value.stock,
     };
-    if (this.id === '00000000-0000-0000-0000-000000000000') {
-      this.movieService.addMovie(movie).subscribe();
-      this.router.navigate(['/movies']);
-    } else {
-      this.movieService.updateMovie(movie).subscribe();
-      this.router.navigate(['/movies']);
+    if (this.movieForm.valid) {
+      if (this.newMovoie) {
+        movie.id = "00000000-0000-0000-0000-000000000000";
+        this.movieService.addMovie(movie).subscribe();
+        this.router.navigate(['/movies']);
+      } else {
+        this.movieService.updateMovie(movie).subscribe();
+        this.router.navigate(['/movies']);
+      }
     }
+    else { console.log(this.movieForm.controls['year'].errors) }
   }
 
   onBack(): void {
@@ -82,9 +89,16 @@ export class MovieDetailsComponent implements OnInit {
       username: localStorage.getItem("userName"),
       description: this.reviewForm.value.review,
       datetime: new Date(),
+      rating: this.reviewForm.value.rating,
     }
     if (this.movie?.reviews == null) this.movie!.reviews = [review];
     else this.movie?.reviews?.push(review);
     this.movieService.updateMovie(this.movie!).subscribe();
+    this.reviewForm.reset();
+  }
+
+  onSelected(value: string): void {
+    this.reviewSort = Number(value);
+    this.getMovie(this.id);
   }
 }

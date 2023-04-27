@@ -13,6 +13,7 @@ import { IUser } from '../shared/models';
 export class LoginComponent {
   isLogin: boolean = true;
   user!: IUser;
+  isSubmitted: boolean | undefined;
   loginForm = new FormGroup({
     email: new FormControl(),
     username: new FormControl(),
@@ -28,12 +29,13 @@ export class LoginComponent {
   onSignUp() {
     this.isLogin = !this.isLogin;
     this.loginForm.controls.email.setValidators(
-      this.isLogin ? [Validators.required] : null
+      !this.isLogin ? [Validators.required, Validators.email] : null,
     );
     this.loginForm.controls.email.updateValueAndValidity();
   }
 
   onSubmit() {
+    this.isSubmitted = true;
     const newUser: IUser = {
       username: this.loginForm.value.username,
       password: this.loginForm.value.password,
@@ -41,12 +43,20 @@ export class LoginComponent {
     };
 
     if (this.loginForm.valid) {
-      this.userService.loginUser(newUser).subscribe((x) => {
-        this.authService.login(x.username, x.password).subscribe((data) => {
-          if (data) this.router.navigate(['/movies']);
+      if (newUser.email) {
+        this.userService.register(newUser).subscribe((x) => {
+          this.authService.login(x.username, x.password).subscribe((data) => {
+            if (data) this.router.navigate(['/movies']);
+          });
         });
-      });
-
+      }
+      else {
+        this.userService.login(newUser).subscribe((x) => {
+          this.authService.login(x.username, x.password).subscribe((data) => {
+            if (data) this.router.navigate(['/movies']);
+          });
+        });
+      }
       this.loginForm.reset();
     }
   }

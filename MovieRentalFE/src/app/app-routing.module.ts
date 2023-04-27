@@ -11,6 +11,11 @@ const routes: Routes = [
     component: MovieDetailsComponent,
     canActivate: [MovieGuardService],
   },
+  {
+    path: 'movies/newMovie',
+    component: MovieDetailsComponent,
+    canActivate: [MovieGuardService],
+  },
   { path: 'movies', component: MovieListComponent },
   { path: 'login', component: LoginComponent },
   { path: 'movie', redirectTo: 'movies', pathMatch: 'full' },

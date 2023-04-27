@@ -2,31 +2,21 @@
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <h1 class="h3 mb-3 fw-normal">Please log in</h1>
     <div class="form-floating" [hidden]="this.isLogin">
-      <input
-        type="email"
-        class="form-control"
-        id="floatingEmail"
-        placeholder="name@example.com"
-        formControlName="email"
-      />
+      <input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com"
+        formControlName="email" />
       <label for="floatingEmail">Email address</label>
+      <span *ngIf="(loginForm.get('email')!.invalid && loginForm.get('email')!.touched) ||
+             (loginForm.get('email')!.untouched && isSubmitted)">
+        Not Valid
+      </span>
     </div>
     <div class="form-floating">
-      <input
-        class="form-control"
-        id="floatingUsername"
-        formControlName="username"
-      />
+      <input class="form-control" id="floatingUsername" placeholder="Username" formControlName="username" />
       <label for="floatingUsername">Username</label>
     </div>
     <div class="form-floating">
-      <input
-        type="password"
-        class="form-control"
-        id="floatingPassword"
-        placeholder="Password"
-        formControlName="password"
-      />
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
+        formControlName="password" />
       <label for="floatingPassword">Password</label>
     </div>
     <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
@@ -34,12 +24,7 @@
   <form>
     <div *ngIf="!this.isLogin">
       <p class="question">Already have an account?</p>
-      <button
-        type="button"
-        class="btn btn-primary"
-        color="primary"
-        (click)="onSignUp()"
-      >
+      <button type="button" class="btn btn-primary" color="primary" (click)="onSignUp()">
         Login
       </button>
     </div>

@@ -1,13 +1,13 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
-import { IMovie } from '../shared/models';
+import { IMovie, ReviewSort } from '../shared/models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MovieService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getMovies(): Observable<IMovie[]> {
     return this.http
@@ -27,9 +27,9 @@ export class MovieService {
       .pipe(catchError(this.handleError));
   }
 
-  getMovieById(id: string): Observable<IMovie> {
+  getMovieById(id: string, sort: ReviewSort): Observable<IMovie> {
     return this.http
-      .get<IMovie>(`https://localhost:44314/Movie/${id}`)
+      .get<IMovie>(`https://localhost:44314/Movie/${id}?sort=${sort}`,)
       .pipe(catchError(this.handleError));
   }
 

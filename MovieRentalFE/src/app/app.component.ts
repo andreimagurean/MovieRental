@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthGuardService } from './guard/authGuard.service';
 
@@ -7,7 +7,7 @@ import { AuthGuardService } from './guard/authGuard.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, DoCheck {
   title = 'MovieRental';
   isUserLoggedIn = false;
 
@@ -17,6 +17,15 @@ export class AppComponent implements OnInit {
     let storeData = localStorage.getItem('isUserLoggedIn');
     if (storeData != null && storeData == 'true') this.isUserLoggedIn = true;
     else this.isUserLoggedIn = false;
+  }
+
+  ngDoCheck(): void {
+    if (localStorage.getItem('isUserLoggedIn') == null || false) {
+      this.isUserLoggedIn = false;
+    }
+    else {
+      this.isUserLoggedIn = true;
+    }
   }
 
   onLogOut() {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieRentalBE.Models;
 using MovieRentalBE.Services;
+using MovieRentalBE.Sort;
 
 namespace MovieRentalBE.Controllers;
 
@@ -22,9 +23,9 @@ public class MovieController : ControllerBase
     }
 
     [HttpGet("{id}", Name = "GetMovie")]
-    public async Task<IActionResult> GetMovie(Guid id)
+    public async Task<IActionResult> GetMovie(Guid id, [FromQuery] ReviewSort sort)
     {
-        return Ok(await movieService.GetMovieById(id));
+        return Ok(await movieService.GetMovieById(id, sort));
     }
 
     [HttpPost]
@@ -33,6 +34,14 @@ public class MovieController : ControllerBase
         if (movie.Stock < 0)
         {
             return BadRequest("Stock cannot be negative");
+        }
+        if (movie.Rating is < 1 or > 5)
+        {
+            return BadRequest("Rating invalid");
+        }
+        if (movie.Year is < 1888 or > 2050)
+        {
+            return BadRequest("Year invalid");
         }
 
         return Ok(await movieService.CreateMovie(movie));
@@ -44,6 +53,14 @@ public class MovieController : ControllerBase
         if (movie.Stock < 0)
         {
             return BadRequest("Stock cannot be negative");
+        }
+        if (movie.Rating is < 0 or > 5)
+        {
+            return BadRequest("Rating invalid");
+        }
+        if (movie.Year is < 1888 or > 2050)
+        {
+            return BadRequest("Year invalid");
         }
 
         return Ok(await movieService.UpdateMovie(movie));

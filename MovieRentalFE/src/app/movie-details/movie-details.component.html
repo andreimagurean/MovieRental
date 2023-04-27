@@ -11,31 +11,47 @@
     <div class="form-group">
       <label for="year">Year:</label>
       <input formControlName="year" type="number" class="form-control" id="year" [defaultValue]="this.movie?.year" />
-    </div>
-    <div class="form-group">
-      <label for="rating">Rating:</label>
-      <input formControlName="rating" type="number" class="form-control" id="rating"
-        [defaultValue]="this.movie?.rating" />
+      <div *ngIf="this.movieForm.controls['year'].errors">Year is invalid</div>
     </div>
     <div class="form-group">
       <label for="rating">Stock:</label>
       <input formControlName="stock" type="number" class="form-control" id="stock" [defaultValue]="this.movie?.stock" />
+      <div *ngIf="this.movieForm.controls['stock'].errors">Stock is invalid</div>
     </div>
     <button (click)="onBack()" class="btn btn-secondary">Back</button>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>
-<div *ngIf="this.id !== '00000000-0000-0000-0000-000000000000'">
+<div *ngIf="!this.newMovoie">
   <h2 class="review-title">Reviews</h2>
+  <div class="review-title">
+    <select class="form-select review" #review (change)="onSelected(review.value)">
+      <option value="0" selected>User</option>
+      <option value="1">Date Ascending</option>
+      <option value="2">Date Descending</option>
+      <option value="3">Rating Ascending</option>
+      <option value="4">Rating Descending</option>
+    </select>
+  </div>
   <div class="review" *ngFor="let review of this.movie?.reviews">
     <p class="review-username">{{review.username}}</p>
-    <p class="review-datetime">{{review.datetime | date:'yyyy-MM-dd'}}</p>
+    <p class="review-details">{{review.datetime | date:'yyyy-MM-dd'}}</p>
+    <p class="review-details"> <app-movie-rating [rating]="review.rating"></app-movie-rating></p>
     <p class="review-description">{{review.description}}</p>
   </div>
   <form [formGroup]="reviewForm" (ngSubmit)="onSubmitReview()" class="post-review w-100">
-    <div class="form-group">
-      <label for="name">Review:</label>
-      <input formControlName="review" type="input" class="form-control" id="review" placeholder="Post your review" />
+    <div class="form-group input-group mb-3">
+      <input formControlName="review" type="input" class="form-control" id="review" placeholder="Post your review">
+    </div>
+    <div class="form-group input-group mb-3">
+      <label class="input-group-text" for="reviewRating">Rating</label>
+      <select class="form-select" formControlName="rating" id="reviewRating">
+        <option value="1">★</option>
+        <option value="2">★★</option>
+        <option value="3">★★★</option>
+        <option value="4">★★★★</option>
+        <option value="5" selected>★★★★★</option>
+      </select>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>

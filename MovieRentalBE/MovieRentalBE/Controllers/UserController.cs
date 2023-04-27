@@ -33,8 +33,8 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateUser(User user)
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(User user)
     {
         if (user.Username is null
             || user.Password is null)
@@ -44,25 +44,33 @@ public class UserController : ControllerBase
 
         User existingUser = await userService.CheckUser(user.Username, user.Password);
 
-        if (user.Email is null)
+        if (existingUser is null)
         {
-            if (existingUser is null)
-            {
-                return BadRequest("Username or password is incorrect");
-            }
-
-            return Ok(existingUser);
+            return BadRequest("Username or password is incorrect");
         }
-        else
+
+        return Ok(existingUser);
+    }
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(User user)
+    {
+
+        if (user.Username is null
+            || user.Password is null)
         {
-            if (existingUser is not null)
-            {
-                return BadRequest("User already exists");
-            }
-
-            user.Id = Guid.NewGuid();
-            return Ok(await userService.CreateUser(user));
+            return BadRequest("Username and password must be provided");
         }
+
+        User existingUser = await userService.CheckUser(user.Username, user.Password);
+
+        if (existingUser is not null)
+        {
+            return BadRequest("User already exists");
+        }
+
+        user.Id = Guid.NewGuid();
+        return Ok(await userService.CreateUser(user));
     }
 
     [HttpPut]

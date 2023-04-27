@@ -2,20 +2,14 @@
   <div class="card-body">
     <div class="input-group mb-3">
       <div class="input-group-prepend"></div>
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Search by name"
-        aria-label="Search"
-        aria-describedby="basic-addon1"
-        [(ngModel)]="listFilter"
-      />
+      <input type="text" class="form-control" placeholder="Search by name" aria-label="Search"
+        aria-describedby="basic-addon1" [(ngModel)]="listFilter" />
     </div>
     <div>
       <h1>{{ pageTitle }}</h1>
     </div>
     <div>
-      <button class="btn btn-primary" [routerLink]="[emptyGuid]">
+      <button class="btn btn-primary" *ngIf="activeUser" [routerLink]="['newMovie']">
         Add movie
       </button>
     </div>
@@ -40,28 +34,17 @@
             <td class=".col-4">{{ movie.year }}</td>
             <td class=".col-4">{{ movie.stock }}</td>
             <td>
-              <app-movie-rating
-                [rating]="movie.rating"
-                (ratingClicked)="onRatingClicked($event)"
-              ></app-movie-rating>
+              <app-movie-rating [rating]="movie.rating" (ratingClicked)="onRatingClicked($event)"></app-movie-rating>
             </td>
             <td class=".col-4 actions">
-              <button
-                class="btn btn-outline-primary bi bi-pencil-fill"
-                [routerLink]="[movie.id]"
-              ></button>
-              <button
-                class="btn btn-outline-primary bi bi-trash-fill"
-                (click)="deleteMovie(movie.id)"
-                *ngIf ="activeUser != undefined"
-              ></button>
-              <button class="btn btn-outline-primary bi bi-bag-fill"
-              *ngIf ="activeUser"
-              [ngClass]="{'btn-outline-danger': this.activeUser.movieId?.includes(movie.id)}"
-              id="{{'rentButton-'+ movie.id}}"
-              (click)="rentMovie(movie.id)"
-              [disabled]="movie.stock == 0"
-              ></button>
+              <button class="btn btn-outline-primary bi bi-pencil-fill" *ngIf="activeUser"
+                [routerLink]="[movie.id]"></button>
+              <button class="btn btn-outline-primary bi bi-trash-fill" (click)="deleteMovie(movie.id)"
+                *ngIf="activeUser != undefined"></button>
+              <button class="btn btn-outline-primary bi bi-bag-fill" *ngIf="activeUser"
+                [ngClass]="{'btn-outline-danger': this.activeUser.movieId?.includes(movie.id)}"
+                id="{{'rentButton-'+ movie.id}}" (click)="rentMovie(movie.id)"
+                [disabled]="movie.stock == 0 && !this.activeUser.movieId?.includes(movie.id)"></button>
             </td>
           </tr>
         </tbody>

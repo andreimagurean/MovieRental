@@ -20,4 +20,13 @@ export interface IReview {
   username?: string;
   description?: string;
   datetime?: Date;
+  rating?: number;
+}
+
+export enum ReviewSort {
+  User = 0,
+  DateAscending = 1,
+  DateDescending = 2,
+  ReviewAscending = 3,
+  ReviewDescending = 4,
 }

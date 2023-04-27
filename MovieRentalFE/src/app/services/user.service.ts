@@ -28,9 +28,15 @@ export class UserService {
       .pipe(catchError(this.handleError));
   }
 
-  loginUser(user: IUser): Observable<IUser> {
+  login(user: IUser): Observable<IUser> {
     return this.http
-      .post<IUser>('https://localhost:44314/User', user)
+      .post<IUser>('https://localhost:44314/User/login', user)
+      .pipe(catchError(this.handleError));
+  }
+
+  register(user: IUser): Observable<IUser> {
+    return this.http
+      .post<IUser>('https://localhost:44314/User/register', user)
       .pipe(catchError(this.handleError));
   }
 

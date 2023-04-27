@@ -20,7 +20,6 @@ export class AuthGuardService {
   }
 
   logout(): void {
-    this.isUserLoggedIn = false;
     localStorage.clear();
   }
 }

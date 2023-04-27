@@ -68,7 +68,7 @@ export class MovieListComponent implements OnInit {
 
   rentMovie(movieId: string) {
     const updatedMovie = this.movies.find(x => x.id === movieId);
-    if (updatedMovie?.stock) {
+    if (updatedMovie?.stock !== undefined && updatedMovie.stock >= 0) {
       if (this.activeUser?.movieId?.includes(updatedMovie.id)) {
         updatedMovie.stock += 1;
         const movieIds = this.activeUser?.movieId?.filter(x => x !== updatedMovie.id);
@@ -87,6 +87,6 @@ export class MovieListComponent implements OnInit {
   }
 
   onRatingClicked(message: string): void {
-    this.pageTitle = 'Movie List: ' + message;
+    this.pageTitle = 'Movie List: ' + message.slice(0, 12);
   }
 }
