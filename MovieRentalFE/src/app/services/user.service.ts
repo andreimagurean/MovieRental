@@ -11,32 +11,36 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getUsers(): Observable<IUser[]> {
+    var authToken = localStorage.getItem("authToken");
     return this.http
-      .get<IUser[]>('https://localhost:44314/User')
+      .get<IUser[]>('https://localhost:44314/User', { headers: { 'Authorization': `Bearer ${authToken}` } })
       .pipe(catchError(this.handleError));
   }
 
-  getUser(username: string): Observable<IUser> {
+  getUser(): Observable<IUser> {
+
+    var authToken = localStorage.getItem("authToken");
     return this.http
-      .get<IUser>(`https://localhost:44314/User/username`, { params: { username } })
+      .get<IUser>(`https://localhost:44314/User/username`, { headers: { 'Authorization': `Bearer ${authToken}` } })
       .pipe(catchError(this.handleError));
   }
 
   updateUser(user: IUser): Observable<IUser> {
+    var authToken = localStorage.getItem("authToken");
     return this.http
-      .put<IUser>('https://localhost:44314/User', user)
+      .put<IUser>('https://localhost:44314/User', user, { headers: { 'Authorization': `Bearer ${authToken}` } })
       .pipe(catchError(this.handleError));
   }
 
-  login(user: IUser): Observable<IUser> {
+  login(user: IUser) {
     return this.http
-      .post<IUser>('https://localhost:44314/User/login', user)
+      .post('https://localhost:44314/User/login', user, { responseType: "text" })
       .pipe(catchError(this.handleError));
   }
 
-  register(user: IUser): Observable<IUser> {
+  register(user: IUser): Observable<string> {
     return this.http
-      .post<IUser>('https://localhost:44314/User/register', user)
+      .post<string>('https://localhost:44314/User/register', user)
       .pipe(catchError(this.handleError));
   }
 

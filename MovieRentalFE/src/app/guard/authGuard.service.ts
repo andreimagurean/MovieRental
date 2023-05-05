@@ -8,14 +8,13 @@ export class AuthGuardService {
   isUserLoggedIn: boolean = false;
   constructor() { }
 
-  login(userName: string, password: string) {
-    if (userName && password) {
+  login(token: string) {
+    if (token) {
       this.isUserLoggedIn = true;
-      localStorage.setItem('userName', userName);
-      localStorage.setItem('password', password);
+      localStorage.setItem('authToken', token);
     }
-    localStorage.setItem('isUserLoggedIn', this.isUserLoggedIn ? 'true' : 'false');
 
+    localStorage.setItem('isUserLoggedIn', this.isUserLoggedIn ? 'true' : 'false');
     return of(this.isUserLoggedIn);
   }
 

@@ -45,14 +45,14 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       if (newUser.email) {
         this.userService.register(newUser).subscribe((x) => {
-          this.authService.login(x.username, x.password).subscribe((data) => {
+          this.authService.login(x).subscribe((data) => {
             if (data) this.router.navigate(['/movies']);
           });
         });
       }
       else {
         this.userService.login(newUser).subscribe((x) => {
-          this.authService.login(x.username, x.password).subscribe((data) => {
+          this.authService.login(x.toString()).subscribe((data) => {
             if (data) this.router.navigate(['/movies']);
           });
         });

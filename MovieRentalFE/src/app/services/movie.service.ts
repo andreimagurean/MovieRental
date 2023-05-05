@@ -16,26 +16,30 @@ export class MovieService {
   }
 
   updateMovie(movie: IMovie): Observable<IMovie> {
+    var authToken = localStorage.getItem("authToken");
     return this.http
-      .put<IMovie>('https://localhost:44314/Movie', movie)
+      .put<IMovie>('https://localhost:44314/Movie', movie, { headers: { 'Authorization': `Bearer ${authToken}` } })
       .pipe(catchError(this.handleError));
   }
 
   deleteMovie(id: string): Observable<IMovie> {
+    var authToken = localStorage.getItem("authToken");
     return this.http
-      .delete<IMovie>(`https://localhost:44314/Movie/${id}`)
+      .delete<IMovie>(`https://localhost:44314/Movie/${id}`, { headers: { 'Authorization': `Bearer ${authToken}` } })
       .pipe(catchError(this.handleError));
   }
 
   getMovieById(id: string, sort: ReviewSort): Observable<IMovie> {
+    var authToken = localStorage.getItem("authToken");
     return this.http
-      .get<IMovie>(`https://localhost:44314/Movie/${id}?sort=${sort}`,)
+      .get<IMovie>(`https://localhost:44314/Movie/${id}?sort=${sort}`, { headers: { 'Authorization': `Bearer ${authToken}` } })
       .pipe(catchError(this.handleError));
   }
 
   addMovie(movie: IMovie): Observable<IMovie> {
+    var authToken = localStorage.getItem("authToken");
     return this.http
-      .post<IMovie>('https://localhost:44314/Movie', movie)
+      .post<IMovie>('https://localhost:44314/Movie', movie, { headers: { 'Authorization': `Bearer ${authToken}` } })
       .pipe(catchError(this.handleError));
   }
 

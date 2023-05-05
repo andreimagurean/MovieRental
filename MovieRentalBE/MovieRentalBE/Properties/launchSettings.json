@@ -1,39 +1,30 @@
-﻿{
-  "$schema": "https://json.schemastore.org/launchsettings.json",
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:39207",
-      "sslPort": 44314
-    }
-  },
+{
   "profiles": {
     "http": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5101",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DATABASE_NAME": "MovieRentalDb",
         "MOVIES_COLLECTION_NAME": "Movies",
         "USERS_COLLECTION_NAME": "Users"
-      }
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5101"
     },
     "https": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7069;http://localhost:5101",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DATABASE_NAME": "MovieRentalDb",
         "MOVIES_COLLECTION_NAME": "Movies",
         "USERS_COLLECTION_NAME": "Users"
-      }
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7069;http://localhost:5101"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -44,7 +35,17 @@
         "DATABASE_NAME": "MovieRentalDb",
         "MOVIES_COLLECTION_NAME": "Movies",
         "USERS_COLLECTION_NAME": "Users"
-      }
+      },
+      "use64Bit": true
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:39207",
+      "sslPort": 44314
     }
   }
 }

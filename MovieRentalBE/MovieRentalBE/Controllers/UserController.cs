@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using MovieRentalBE.Models;
 using MovieRentalBE.Services;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace MovieRentalBE.Controllers;
 
@@ -9,30 +14,35 @@ namespace MovieRentalBE.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService userService;
+    private readonly IConfiguration configuration;
 
-    public UserController(IUserService userService)
+    public UserController(IUserService userService, IConfiguration configuration)
     {
         this.userService = userService;
+        this.configuration = configuration;
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetUsers()
     {
         return Ok(await userService.GetUsers());
     }
 
+    [Authorize]
     [HttpGet("username")]
-    public async Task<IActionResult> GetUser(string username) // TODO: Credentials should not be in the URL
+    public async Task<IActionResult> GetUser()
     {
-        User result = await userService.GetUser(username);
-        if (result == null)
+        if (HttpContext.User.Identity is ClaimsIdentity identity)
         {
-            return BadRequest("Username or password is incorrect");
-        }
+            string? username = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
-        return Ok(result);
+            return Ok(await userService.GetUser(username));
+        }
+        return NotFound();
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login(User user)
     {
@@ -49,9 +59,11 @@ public class UserController : ControllerBase
             return BadRequest("Username or password is incorrect");
         }
 
-        return Ok(existingUser);
+        string token = Generate(existingUser);
+        return Ok(token);
     }
 
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<IActionResult> Register(User user)
     {
@@ -73,9 +85,30 @@ public class UserController : ControllerBase
         return Ok(await userService.CreateUser(user));
     }
 
+    [Authorize]
     [HttpPut]
     public async Task<IActionResult> UpdateUser(User user)
     {
         return Ok(await userService.UpdateUser(user));
+    }
+
+    private string Generate(User user)
+    {
+        SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+        SigningCredentials credentials = new(securityKey, SecurityAlgorithms.HmacSha256);
+
+        Claim[] claims = new[]
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Username),
+            new Claim(ClaimTypes.Email, user.Email),
+        };
+
+        JwtSecurityToken token = new(configuration["Jwt:Issuer"],
+            configuration["Jwt:Audience"],
+            claims,
+            expires: DateTime.Now.AddMinutes(15),
+            signingCredentials: credentials);
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

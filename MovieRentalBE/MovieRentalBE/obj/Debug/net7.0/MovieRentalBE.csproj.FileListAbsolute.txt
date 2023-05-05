@@ -139,3 +139,13 @@ C:\Users\Andrei.Magurean\source\repos\MovieRental\MovieRentalBE\MovieRentalBE\ob
 C:\Users\Andrei.Magurean\source\repos\MovieRental\MovieRentalBE\MovieRentalBE\obj\Debug\net7.0\MovieRentalBE.pdb
 C:\Users\Andrei.Magurean\source\repos\MovieRental\MovieRentalBE\MovieRentalBE\obj\Debug\net7.0\MovieRentalBE.genruntimeconfig.cache
 C:\Users\Andrei.Magurean\source\repos\MovieRental\MovieRentalBE\MovieRentalBE\obj\Debug\net7.0\ref\MovieRentalBE.dll
+C:\Users\Andrei.Magurean\source\repos\MovieRental\MovieRentalBE\MovieRentalBE\bin\Debug\net7.0\AWSSDK.Core.dll
+C:\Users\Andrei.Magurean\source\repos\MovieRental\MovieRentalBE\MovieRentalBE\bin\Debug\net7.0\AWSSDK.SecurityToken.dll
+C:\Users\Andrei.Magurean\source\repos\MovieRental\MovieRentalBE\MovieRentalBE\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Andrei.Magurean\source\repos\MovieRental\MovieRentalBE\MovieRentalBE\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Andrei.Magurean\source\repos\MovieRental\MovieRentalBE\MovieRentalBE\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Andrei.Magurean\source\repos\MovieRental\MovieRentalBE\MovieRentalBE\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Andrei.Magurean\source\repos\MovieRental\MovieRentalBE\MovieRentalBE\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Andrei.Magurean\source\repos\MovieRental\MovieRentalBE\MovieRentalBE\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Andrei.Magurean\source\repos\MovieRental\MovieRentalBE\MovieRentalBE\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Andrei.Magurean\source\repos\MovieRental\MovieRentalBE\MovieRentalBE\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll

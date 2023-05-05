@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieRentalBE.Models;
 using MovieRentalBE.Services;
 using MovieRentalBE.Sort;
@@ -16,18 +17,21 @@ public class MovieController : ControllerBase
         this.movieService = movieService;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetMovies()
     {
         return Ok(await movieService.GetMovies());
     }
 
+    [Authorize]
     [HttpGet("{id}", Name = "GetMovie")]
     public async Task<IActionResult> GetMovie(Guid id, [FromQuery] ReviewSort sort)
     {
         return Ok(await movieService.GetMovieById(id, sort));
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> CreateMovie(Movie movie)
     {
@@ -47,6 +51,7 @@ public class MovieController : ControllerBase
         return Ok(await movieService.CreateMovie(movie));
     }
 
+    [Authorize]
     [HttpPut]
     public async Task<IActionResult> UpdateMovie(Movie movie)
     {
@@ -66,6 +71,7 @@ public class MovieController : ControllerBase
         return Ok(await movieService.UpdateMovie(movie));
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteMovie(Guid id)
     {

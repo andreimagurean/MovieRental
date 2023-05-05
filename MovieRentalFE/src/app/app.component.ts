@@ -14,7 +14,11 @@ export class AppComponent implements OnInit, DoCheck {
   constructor(private authService: AuthGuardService, private router: Router) { }
 
   ngOnInit() {
-    let storeData = localStorage.getItem('isUserLoggedIn');
+    const token = localStorage.getItem('authToken');
+    if (this.tokenExpired(token) == true) {
+      this.onLogOut();
+    }
+    const storeData = localStorage.getItem('isUserLoggedIn');
     if (storeData != null && storeData == 'true') this.isUserLoggedIn = true;
     else this.isUserLoggedIn = false;
   }
@@ -30,7 +34,14 @@ export class AppComponent implements OnInit, DoCheck {
 
   onLogOut() {
     this.authService.logout();
-    alert('You have been logged out');
     this.router.navigate(['/login']);
+  }
+
+  private tokenExpired(token: string | null) {
+    if (!token) {
+      return true
+    }
+    const expiry = (JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString('base64'))).exp;
+    return (Math.floor((new Date).getTime() / 1000)) >= expiry;
   }
 }
