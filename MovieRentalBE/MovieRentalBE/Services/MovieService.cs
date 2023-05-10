@@ -8,6 +8,7 @@ namespace MovieRentalBE.Services;
 public class MovieService : IMovieService
 {
     private readonly IMongoCollection<Movie> movies;
+
     public MovieService(IDbClient dbClient)
     {
         movies = dbClient.GetMoviesCollection();
@@ -33,7 +34,7 @@ public class MovieService : IMovieService
         return movie;
     }
 
-    public async Task<Movie> GetMovieById(Guid id, ReviewSort? sort)
+    public async Task<Movie> GetMovieById(Guid id, ReviewSort sort)
     {
         Movie movie = await movies.Find(movie => movie.Id == id).FirstOrDefaultAsync();
 
@@ -42,15 +43,7 @@ public class MovieService : IMovieService
             return movie;
         }
 
-        movie.Reviews = sort switch
-        {
-            ReviewSort.User => movie.Reviews.OrderBy(x => x.Username).ToList(),
-            ReviewSort.DateAscending => movie.Reviews.OrderBy(x => x.Datetime).ToList(),
-            ReviewSort.DateDescending => movie.Reviews.OrderByDescending(x => x.Datetime).ToList(),
-            ReviewSort.RatingAscending => movie.Reviews.OrderBy(x => x.Rating).ToList(),
-            ReviewSort.RatingDescending => movie.Reviews.OrderByDescending(x => x.Rating).ToList(),
-            _ => null,
-        };
+        movie.Reviews = SortReviews(movie.Reviews, sort);
 
         return movie;
     }
@@ -64,15 +57,7 @@ public class MovieService : IMovieService
             return null;
         }
 
-        return sort switch
-        {
-            ReviewSort.User => reviews.OrderBy(x => x.Username).ToList(),
-            ReviewSort.DateAscending => reviews.OrderBy(x => x.Datetime).ToList(),
-            ReviewSort.DateDescending => reviews.OrderByDescending(x => x.Datetime).ToList(),
-            ReviewSort.RatingAscending => reviews.OrderBy(x => x.Rating).ToList(),
-            ReviewSort.RatingDescending => reviews.OrderByDescending(x => x.Rating).ToList(),
-            _ => null,
-        };
+        return SortReviews(reviews, sort);
     }
 
     public async Task DeleteMovie(Guid id)
@@ -88,5 +73,18 @@ public class MovieService : IMovieService
         }
 
         return movie.Reviews?.Sum(r => r.Rating) / movie.Reviews?.Count;
+    }
+
+    private List<Review> SortReviews(List<Review> reviews, ReviewSort sort)
+    {
+        return sort switch
+        {
+            ReviewSort.User => reviews.OrderBy(x => x.Username).ToList(),
+            ReviewSort.DateAscending => reviews.OrderBy(x => x.Datetime).ToList(),
+            ReviewSort.DateDescending => reviews.OrderByDescending(x => x.Datetime).ToList(),
+            ReviewSort.RatingAscending => reviews.OrderBy(x => x.Rating).ToList(),
+            ReviewSort.RatingDescending => reviews.OrderByDescending(x => x.Rating).ToList(),
+            _ => reviews,
+        };
     }
 }

@@ -30,8 +30,8 @@ export class MovieListComponent implements OnInit {
   constructor(private movieService: MovieService, private userService: UserService) { }
 
   ngOnInit(): void {
+    const token = localStorage.getItem('authToken');
     this.loadMovies();
-    const token = localStorage.getItem("authToken");
     if (token) {
       this.userService.getUser().subscribe(user => {
         localStorage.setItem('userName', user.username);

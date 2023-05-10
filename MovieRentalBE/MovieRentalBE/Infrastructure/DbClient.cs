@@ -8,6 +8,7 @@ public class DbClient : IDbClient
 {
     private readonly IMongoCollection<Movie> movies;
     private readonly IMongoCollection<User> users;
+
     public DbClient(IOptions<MovieRentalDbConfig> options)
     {
         MongoClient client = new(options.Value.Connection_String);

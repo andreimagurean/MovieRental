@@ -1,4 +1,4 @@
-import { Component, DoCheck, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthGuardService } from './guard/authGuard.service';
 
@@ -15,7 +15,7 @@ export class AppComponent implements OnInit, DoCheck {
 
   ngOnInit() {
     const token = localStorage.getItem('authToken');
-    if (this.tokenExpired(token) == true) {
+    if (this.authService.expiredAuthToken(token) == true) {
       this.onLogOut();
     }
     const storeData = localStorage.getItem('isUserLoggedIn');
@@ -34,14 +34,5 @@ export class AppComponent implements OnInit, DoCheck {
 
   onLogOut() {
     this.authService.logout();
-    this.router.navigate(['/login']);
-  }
-
-  private tokenExpired(token: string | null) {
-    if (!token) {
-      return true
-    }
-    const expiry = (JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString('base64'))).exp;
-    return (Math.floor((new Date).getTime() / 1000)) >= expiry;
   }
 }

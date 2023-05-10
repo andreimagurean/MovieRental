@@ -24,7 +24,7 @@ export class MovieDetailsComponent implements OnInit {
   });
   reviewForm = new FormGroup({
     review: new FormControl(),
-    rating: new FormControl()
+    rating: new FormControl(5)
   });
   maxYear = new Date().getFullYear();
 

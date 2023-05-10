@@ -52,7 +52,7 @@ export class LoginComponent {
       }
       else {
         this.userService.login(newUser).subscribe((x) => {
-          this.authService.login(x.toString()).subscribe((data) => {
+          this.authService.login(x).subscribe((data) => {
             if (data) this.router.navigate(['/movies']);
           });
         });

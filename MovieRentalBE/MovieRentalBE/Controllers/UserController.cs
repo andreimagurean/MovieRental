@@ -44,7 +44,7 @@ public class UserController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("login")]
-    public async Task<IActionResult> Login(User user)
+    public async Task<IActionResult> Login(UserLogin user)
     {
         if (user.Username is null
             || user.Password is null)
@@ -59,7 +59,7 @@ public class UserController : ControllerBase
             return BadRequest("Username or password is incorrect");
         }
 
-        string token = Generate(existingUser);
+        string token = GenerateToken(existingUser);
         return Ok(token);
     }
 
@@ -92,15 +92,15 @@ public class UserController : ControllerBase
         return Ok(await userService.UpdateUser(user));
     }
 
-    private string Generate(User user)
+    private string GenerateToken(User user)
     {
-        SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+        SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!));
         SigningCredentials credentials = new(securityKey, SecurityAlgorithms.HmacSha256);
 
         Claim[] claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Username),
-            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.NameIdentifier, user.Username!),
+            new Claim(ClaimTypes.Email, user.Email!),
         };
 
         JwtSecurityToken token = new(configuration["Jwt:Issuer"],
