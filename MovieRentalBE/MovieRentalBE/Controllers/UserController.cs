@@ -82,7 +82,9 @@ public class UserController : ControllerBase
         }
 
         user.Id = Guid.NewGuid();
-        return Ok(await userService.CreateUser(user));
+        await userService.CreateUser(user);
+        string token = GenerateToken(user);
+        return Ok(token);
     }
 
     [Authorize]

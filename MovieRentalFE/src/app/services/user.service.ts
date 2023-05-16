@@ -43,8 +43,8 @@ export class UserService {
       .post('https://localhost:44314/User/login', user, { responseType: "text" })
   }
 
-  register(user: IUser): Observable<string> {
+  register(user: IUser) {
     return this.http
-      .post<string>('https://localhost:44314/User/register', user)
+      .post('https://localhost:44314/User/register', user, { responseType: "text" })
   }
 }

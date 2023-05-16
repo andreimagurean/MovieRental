@@ -28,7 +28,6 @@ export class MovieDetailsComponent implements OnInit {
   });
   maxYear = new Date().getFullYear();
 
-
   constructor(
     private movieService: MovieService,
     private route: ActivatedRoute,
@@ -77,7 +76,6 @@ export class MovieDetailsComponent implements OnInit {
         this.router.navigate(['/movies']);
       }
     }
-    else { console.log(this.movieForm.controls['year'].errors) }
   }
 
   onBack(): void {

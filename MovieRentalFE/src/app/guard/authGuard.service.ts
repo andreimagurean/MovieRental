@@ -30,7 +30,6 @@ export class AuthGuardService {
       return true;
     }
     const expiry = (JSON.parse(Buffer.from(token!.split('.')[1], 'base64').toString())).exp;
-    console.log(expiry);
     if ((Math.floor((new Date).getTime() / 1000)) >= expiry) {
       this.logout();
       return true;
